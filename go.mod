@@ -9,7 +9,7 @@ go 1.27.3
 require (
 	github.com/mdlayher/vsock v1.4.0
 	github.com/oxidecomputer/oxide.go v0.12.0
-	golang.org/x/time v0.15.0
+	golang.org/x/time v0.16.0
 	k8s.io/api v0.37.2
 	k8s.io/apimachinery v0.37.2
 	k8s.io/client-go v0.37.2
