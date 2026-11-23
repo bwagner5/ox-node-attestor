@@ -50,7 +50,7 @@ tolerations:
     operator: Exists
 image:
   # -- Repository path to the attestor image.
-  repository: ghcr.io/oxidecomputer/oxide-node-attestor
+  repository: ghcr.io/bwagner5/ox-node-attestor
   # -- Tag of the attestor image.
   tag: ""
   # -- SHA256 digest of the attestor image.

@@ -7,8 +7,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation/attestationtest"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation/attestationtest"
 )
 
 const (

@@ -29,13 +29,13 @@ import (
 	k8stesting "k8s.io/client-go/testing"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation/attestationtest"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/issuer"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/join"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/node"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/nonce"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/server"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation/attestationtest"
+	"github.com/bwagner5/ox-node-attestor/pkg/issuer"
+	"github.com/bwagner5/ox-node-attestor/pkg/join"
+	"github.com/bwagner5/ox-node-attestor/pkg/node"
+	"github.com/bwagner5/ox-node-attestor/pkg/nonce"
+	"github.com/bwagner5/ox-node-attestor/pkg/server"
 )
 
 const (

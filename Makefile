@@ -1,9 +1,9 @@
 # Snapshot tags are skipped.
 VERSION ?= $(shell git describe --tags --always --exclude '*-*' | sed -e 's/^v//')
 
-MY_IMAGE_REPO ?= ghcr.io/$(GITHUB_USER)/oxide-node-attestor
-IMAGE_REPO ?= ghcr.io/oxidecomputer/oxide-node-attestor
-HELM_OCI_REPO ?= ghcr.io/oxidecomputer/helm-charts
+MY_IMAGE_REPO ?= ghcr.io/$(GITHUB_USER)/ox-node-attestor
+IMAGE_REPO ?= ghcr.io/bwagner5/ox-node-attestor
+HELM_OCI_REPO ?= ghcr.io/bwagner5/helm-charts
 CHART_NAME ?= oxide-node-attestor
 CHART_DIR ?= charts/$(CHART_NAME)
 IMAGE_TAG ?= dev
@@ -15,7 +15,7 @@ GO_TOOL := go tool -modfile=$(TOOLS_MOD)
 NAMESPACE ?= kube-system
 SHELLCHECK_VERSION ?= v0.11.0
 
-LDFLAGS ?= -ldflags=-X=github.com/oxidecomputer/oxide-node-attestor/pkg/version.Version=$(VERSION)
+LDFLAGS ?= -ldflags=-X=github.com/bwagner5/ox-node-attestor/pkg/version.Version=$(VERSION)
 GOFLAGS += $(LDFLAGS)
 WITH_GOFLAGS = GOFLAGS="$(GOFLAGS)"
 

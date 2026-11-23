@@ -4,12 +4,12 @@
 
 A Helm chart for the Oxide node attestor, which admits Oxide instances to a Kubernetes cluster by attestation.
 
-**Homepage:** <https://github.com/oxidecomputer/oxide-node-attestor>
+**Homepage:** <https://github.com/bwagner5/ox-node-attestor>
 
 ## Installing the Chart
 
 ```console
-helm upgrade --install oxide-node-attestor oci://ghcr.io/oxidecomputer/helm-charts/oxide-node-attestor \
+helm upgrade --install oxide-node-attestor oci://ghcr.io/bwagner5/helm-charts/oxide-node-attestor \
   --namespace kube-system \
   --set settings.oxide.host=${OXIDE_HOST} \
   --set settings.oxide.project=${OXIDE_PROJECT} \
@@ -22,7 +22,7 @@ chart does not create.
 
 ## Source Code
 
-* <https://github.com/oxidecomputer/oxide-node-attestor>
+* <https://github.com/bwagner5/ox-node-attestor>
 
 ## Values
 
@@ -34,7 +34,7 @@ chart does not create.
 | env | list | `[]` | Additional environment variables for the attestor pod. |
 | fullnameOverride | string | `""` | Overrides the chart's computed fullname. |
 | image.digest | string | `""` | SHA256 digest of the attestor image. |
-| image.repository | string | `"ghcr.io/oxidecomputer/oxide-node-attestor"` | Repository path to the attestor image. |
+| image.repository | string | `"ghcr.io/bwagner5/ox-node-attestor"` | Repository path to the attestor image. |
 | image.tag | string | `""` | Tag of the attestor image. |
 | imagePullPolicy | string | `"IfNotPresent"` | Image pull policy for Docker images. |
 | imagePullSecrets | list | `[]` | Image pull secrets for Docker images. |

@@ -23,12 +23,12 @@ import (
 	"k8s.io/client-go/kubernetes"
 	"k8s.io/client-go/tools/clientcmd"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/issuer"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/nonce"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/oxide"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/server"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/version"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation"
+	"github.com/bwagner5/ox-node-attestor/pkg/issuer"
+	"github.com/bwagner5/ox-node-attestor/pkg/nonce"
+	"github.com/bwagner5/ox-node-attestor/pkg/oxide"
+	"github.com/bwagner5/ox-node-attestor/pkg/server"
+	"github.com/bwagner5/ox-node-attestor/pkg/version"
 )
 
 func main() {

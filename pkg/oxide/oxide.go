@@ -8,7 +8,7 @@ import (
 
 	"github.com/oxidecomputer/oxide.go/oxide"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/server"
+	"github.com/bwagner5/ox-node-attestor/pkg/server"
 )
 
 // Client reads the Oxide API with the credential in OXIDE_HOST and

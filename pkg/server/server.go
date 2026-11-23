@@ -20,9 +20,9 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/join"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/nonce"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation"
+	"github.com/bwagner5/ox-node-attestor/pkg/join"
+	"github.com/bwagner5/ox-node-attestor/pkg/nonce"
 )
 
 const (

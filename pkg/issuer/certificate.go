@@ -14,8 +14,8 @@ import (
 	"k8s.io/apimachinery/pkg/util/wait"
 	"k8s.io/client-go/kubernetes"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/join"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/server"
+	"github.com/bwagner5/ox-node-attestor/pkg/join"
+	"github.com/bwagner5/ox-node-attestor/pkg/server"
 )
 
 // InstanceAnnotation records, on a CertificateSigningRequest, the instance

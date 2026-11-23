@@ -10,6 +10,6 @@ keywords:
   - attestation
   - bootstrap
   - oxide
-home: https://github.com/oxidecomputer/oxide-node-attestor
+home: https://github.com/bwagner5/ox-node-attestor
 sources:
-  - https://github.com/oxidecomputer/oxide-node-attestor
+  - https://github.com/bwagner5/ox-node-attestor

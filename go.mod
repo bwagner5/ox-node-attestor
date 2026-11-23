@@ -1,4 +1,4 @@
-module github.com/oxidecomputer/oxide-node-attestor
+module github.com/bwagner5/ox-node-attestor
 
 go 1.27.3
 

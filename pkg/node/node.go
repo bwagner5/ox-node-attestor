@@ -21,8 +21,8 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	clientcmdapi "k8s.io/client-go/tools/clientcmd/api"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/attestation"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/join"
+	"github.com/bwagner5/ox-node-attestor/pkg/attestation"
+	"github.com/bwagner5/ox-node-attestor/pkg/join"
 )
 
 // Refused is the attestor declining to admit this node.

@@ -15,8 +15,8 @@ import (
 	"syscall"
 	"time"
 
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/node"
-	"github.com/oxidecomputer/oxide-node-attestor/pkg/version"
+	"github.com/bwagner5/ox-node-attestor/pkg/node"
+	"github.com/bwagner5/ox-node-attestor/pkg/version"
 )
 
 func main() {
