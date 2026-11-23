@@ -1,0 +1,157 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "attestor.fullname" . }}
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "attestor.labels" . | nindent 4 }}
+  {{- with .Values.additionalAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  replicas: {{ .Values.replicas }}
+  revisionHistoryLimit: {{ .Values.revisionHistoryLimit }}
+  selector:
+    matchLabels:
+      {{- include "attestor.selectorLabels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        {{- include "attestor.selectorLabels" . | nindent 8 }}
+      {{- with .Values.podLabels }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      annotations:
+        checksum/platform-roots: {{ .Values.settings.platformRoots | sha256sum }}
+      {{- with .Values.podAnnotations }}
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+    spec:
+      {{- with .Values.imagePullSecrets }}
+      imagePullSecrets:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      serviceAccountName: {{ include "attestor.serviceAccountName" . }}
+      {{- if .Values.kubeconfig.secretName }}
+      automountServiceAccountToken: false
+      {{- end }}
+      {{- with .Values.podSecurityContext }}
+      securityContext:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.priorityClassName }}
+      priorityClassName: {{ . | quote }}
+      {{- end }}
+      containers:
+        - name: attestor
+          image: {{ include "attestor.image" . }}
+          imagePullPolicy: {{ .Values.imagePullPolicy }}
+          securityContext:
+            allowPrivilegeEscalation: false
+            readOnlyRootFilesystem: true
+            capabilities:
+              drop: ["ALL"]
+          args:
+            - --listen-address=:{{ .Values.port }}
+            - --tls-cert-file=/etc/oxide-node-attestor/tls/tls.crt
+            - --tls-key-file=/etc/oxide-node-attestor/tls/tls.key
+            - --platform-roots-file=/etc/oxide-node-attestor/roots/roots.pem
+            - --oxide-project={{ required "settings.oxide.project is required" .Values.settings.oxide.project }}
+            - --issuer={{ .Values.settings.issuer }}
+            {{- with .Values.settings.sledSerials }}
+            - --sled-serials={{ join "," . }}
+            {{- end }}
+            {{- with .Values.settings.certificateTTL }}
+            - --certificate-ttl={{ . }}
+            {{- end }}
+            {{- with .Values.settings.tokenTTL }}
+            - --token-ttl={{ . }}
+            {{- end }}
+            {{- with .Values.settings.tokenGroups }}
+            - --token-groups={{ join "," . }}
+            {{- end }}
+            {{- with .Values.settings.rateLimit }}
+            - --rate-limit={{ . }}
+            {{- end }}
+            {{- if .Values.kubeconfig.secretName }}
+            - --kubeconfig=/etc/oxide-node-attestor/kubeconfig/value
+            {{- end }}
+            {{- if .Values.settings.nonceKeySecret.name }}
+            - --nonce-key-file=/etc/oxide-node-attestor/nonce/{{ .Values.settings.nonceKeySecret.key }}
+            {{- end }}
+          env:
+            - name: OXIDE_HOST
+              value: {{ required "settings.oxide.host is required" .Values.settings.oxide.host | quote }}
+            - name: OXIDE_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.settings.oxide.tokenSecret.name }}
+                  key: {{ .Values.settings.oxide.tokenSecret.key }}
+            {{- with .Values.env }}
+            {{- toYaml . | nindent 12 }}
+            {{- end }}
+          ports:
+            - name: https
+              containerPort: {{ .Values.port }}
+              protocol: TCP
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: https
+              scheme: HTTPS
+          {{- with .Values.resources }}
+          resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          volumeMounts:
+            - name: tls
+              mountPath: /etc/oxide-node-attestor/tls
+              readOnly: true
+            - name: platform-roots
+              mountPath: /etc/oxide-node-attestor/roots
+              readOnly: true
+            {{- if .Values.kubeconfig.secretName }}
+            - name: kubeconfig
+              mountPath: /etc/oxide-node-attestor/kubeconfig
+              readOnly: true
+            {{- end }}
+            {{- if .Values.settings.nonceKeySecret.name }}
+            - name: nonce-key
+              mountPath: /etc/oxide-node-attestor/nonce
+              readOnly: true
+            {{- end }}
+      volumes:
+        - name: tls
+          secret:
+            secretName: {{ .Values.settings.tls.secretName }}
+        - name: platform-roots
+          configMap:
+            name: {{ include "attestor.fullname" . }}-platform-roots
+        {{- if .Values.kubeconfig.secretName }}
+        - name: kubeconfig
+          secret:
+            secretName: {{ .Values.kubeconfig.secretName }}
+        {{- end }}
+        {{- if .Values.settings.nonceKeySecret.name }}
+        - name: nonce-key
+          secret:
+            secretName: {{ .Values.settings.nonceKeySecret.name }}
+        {{- end }}
+      {{- with .Values.nodeSelector }}
+      nodeSelector:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.affinity }}
+      affinity:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}
+      {{- with .Values.tolerations }}
+      tolerations:
+        {{- toYaml . | nindent 8 }}
+      {{- end }}

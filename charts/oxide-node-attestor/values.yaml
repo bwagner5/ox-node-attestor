@@ -1,0 +1,108 @@
+# -- Overrides the chart's name.
+nameOverride: ""
+# -- Overrides the chart's computed fullname.
+fullnameOverride: ""
+# -- Additional labels to add into metadata.
+additionalLabels: {}
+# -- Additional annotations to add into metadata.
+additionalAnnotations: {}
+# -- Image pull policy for Docker images.
+imagePullPolicy: IfNotPresent
+# -- Image pull secrets for Docker images.
+imagePullSecrets: []
+serviceAccount:
+  # -- Specifies if a ServiceAccount should be created.
+  create: true
+  # -- The name of the ServiceAccount to use.
+  name: ""
+  # -- Additional annotations for the ServiceAccount.
+  annotations: {}
+rbac:
+  # -- Specifies if the ServiceAccount's roles and bindings should be created.
+  create: true
+kubeconfig:
+  # -- Secret holding a kubeconfig (key `value`) for the cluster nodes join, when the
+  # attestor runs outside it. Its user needs what `rbac.create` would grant.
+  secretName: ""
+# -- Number of replicas. More than one needs `settings.nonceKeySecret`.
+replicas: 1
+# -- The number of old ReplicaSets to retain to allow rollback.
+revisionHistoryLimit: 10
+# -- Additional labels for the pod.
+podLabels: {}
+# -- Additional annotations for the pod.
+podAnnotations: {}
+# -- SecurityContext for the pod.
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+# -- PriorityClass name for the pod.
+priorityClassName: system-cluster-critical
+# -- Node selectors to schedule the pod to nodes with labels.
+nodeSelector:
+  kubernetes.io/os: linux
+# -- Affinity rules for scheduling the pod.
+affinity: {}
+# -- Tolerations to allow the pod to be scheduled to nodes with taints.
+tolerations:
+  - key: CriticalAddonsOnly
+    operator: Exists
+image:
+  # -- Repository path to the attestor image.
+  repository: ghcr.io/oxidecomputer/oxide-node-attestor
+  # -- Tag of the attestor image.
+  tag: ""
+  # -- SHA256 digest of the attestor image.
+  digest: ""
+# -- Additional environment variables for the attestor pod.
+env: []
+# -- Resources for the attestor pod.
+resources: {}
+# -- The container port the attestor serves on.
+port: 8443
+service:
+  # -- Type of the Service nodes reach the attestor through.
+  type: ClusterIP
+  # -- Port of the Service.
+  port: 443
+  # -- Additional annotations for the Service.
+  annotations: {}
+# -- Settings to configure the attestor.
+settings:
+  # -- Oxide API configuration.
+  oxide:
+    # -- URL of the Oxide API, for example https://oxide.sys.example.com.
+    host: ""
+    # -- Oxide project whose instances may join the cluster.
+    project: ""
+    # -- Secret in the release namespace holding the Oxide API token, which needs to read
+    # the project's instances.
+    tokenSecret:
+      name: oxide-api-token
+      key: token
+  # -- PEM platform identity root certificates attestations must chain to.
+  platformRoots: ""
+  # -- Serials of the only sleds attestations may come from. Empty admits any sled
+  # under `platformRoots`.
+  sledSerials: []
+  # -- Credential issued to an admitted node: `certificate`, a short-lived kubelet
+  # client certificate, or `token`, a bootstrap token.
+  issuer: certificate
+  # -- Lifetime of an issued certificate. Defaults to 10m, the least a cluster signs.
+  certificateTTL: ""
+  # -- Lifetime of an issued token. Defaults to 2m.
+  tokenTTL: ""
+  # -- Extra groups an issued token authenticates into.
+  tokenGroups: []
+  tls:
+    # -- Secret (keys `tls.crt` and `tls.key`) holding the serving certificate, which
+    # nodes must be able to verify. Not created by this chart.
+    secretName: oxide-node-attestor-tls
+  # -- Secret holding a key of at least 32 bytes that replicas share to accept each
+  # other's nonces. Unset, each replica makes its own.
+  nonceKeySecret:
+    name: ""
+    key: key
+  # -- Requests per second served across all callers. Defaults to 20.
+  rateLimit: ""

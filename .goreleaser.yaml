@@ -1,0 +1,77 @@
+version: 2
+
+before:
+  hooks:
+    - make manifests VERSION={{ .Version }}
+
+builds:
+  - id: oxide-node-attestor
+    main: ./cmd/oxide-node-attestor
+    binary: oxide-node-attestor
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/oxidecomputer/oxide-node-attestor/pkg/version.Version={{.Version}}
+      - -X github.com/oxidecomputer/oxide-node-attestor/pkg/version.Commit={{.Commit}}
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+  # Installed in node images rather than run as a container.
+  - id: oxide-node-join
+    main: ./cmd/oxide-node-join
+    binary: oxide-node-join
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/oxidecomputer/oxide-node-attestor/pkg/version.Version={{.Version}}
+      - -X github.com/oxidecomputer/oxide-node-attestor/pkg/version.Commit={{.Commit}}
+    mod_timestamp: '{{ .CommitTimestamp }}'
+    goos:
+      - linux
+    goarch:
+      - amd64
+      - arm64
+
+archives:
+  - id: oxide-node-join
+    ids:
+      - oxide-node-join
+    name_template: "oxide-node-join_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+
+kos:
+  - id: oxide-node-attestor
+    build: oxide-node-attestor
+    repositories:
+      - ghcr.io/oxidecomputer/oxide-node-attestor
+    platforms:
+      - linux/amd64
+      - linux/arm64
+    tags:
+      - "{{ .Version }}"
+      - "{{ if not .Prerelease }}latest{{ end }}"
+    bare: true
+    preserve_import_paths: false
+    creation_time: "{{ .CommitTimestamp }}"
+    ko_data_creation_time: "{{ .CommitTimestamp }}"
+
+checksum:
+  name_template: "checksums.txt"
+  extra_files:
+    - glob: ./_artifacts/helm/*.tgz
+
+release:
+  # Snapshot tags (vX.Y.Z-<suffix>) publish as prereleases; see `make snapshot-tag`.
+  prerelease: auto
+  make_latest: "{{ not .Prerelease }}"
+  extra_files:
+    - glob: ./_artifacts/helm/*.tgz

@@ -1,0 +1,15 @@
+apiVersion: v2
+name: oxide-node-attestor
+description: A Helm chart for the Oxide node attestor, which admits Oxide instances to a Kubernetes cluster by attestation.
+type: application
+version: "0.0.1"
+appVersion: "0.0.1"
+keywords:
+  - cluster
+  - node
+  - attestation
+  - bootstrap
+  - oxide
+home: https://github.com/oxidecomputer/oxide-node-attestor
+sources:
+  - https://github.com/oxidecomputer/oxide-node-attestor
